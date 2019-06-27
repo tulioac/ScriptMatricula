@@ -2,8 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import json
 
-# TODO Começar a tentar fazer a matrícula a apartir do horário da url (https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoHorarioConfirmar&ano=2019&periodo=1)
-# TODO Ficar dando reload na página enquanto a "Realizar matrícula" ainda não abrir
 
 def ler_do_json():
     with open("dados.json", encoding="utf-8") as json_file:
