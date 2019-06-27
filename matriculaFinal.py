@@ -12,6 +12,18 @@ def ler_do_json():
             disciplinas = d["disciplinas"]
     return matricula, senha, disciplinas
 
+
+def fazLogin(matricula, senha):
+    user = browser.find_element_by_name("login")
+    password = browser.find_element_by_name("senha")
+    user.clear()
+    user.send_keys(matricula)
+    password.clear()
+    password.send_keys(senha)
+    browser.find_element_by_xpath(
+        ".//*[contains(text(), 'OK')]").click()
+    
+
 def localizador_de_disciplinas(codigo_e_posicoes):
     for contador in range(1, 400):
         try:
@@ -34,17 +46,10 @@ browser.get(
 
 matricula, senha, disciplinas_para_matricular = ler_do_json()
 
-user = browser.find_element_by_name("login")
-password = browser.find_element_by_name("senha")
-user.clear()
-user.send_keys(matricula)
-password.clear()
-password.send_keys(senha)
-browser.find_element_by_xpath(
-    ".//*[contains(text(), 'OK')]").click()
-browser.get(
-    "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoMatriculaGetForm")
+fazLogin(matricula, senha)
 
+urlMatricula = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoMatriculaGetForm"
+browser.get(urlMatricula)
 
 codigo_e_posicoes = {}
 localizador_de_disciplinas(codigo_e_posicoes)
