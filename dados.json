@@ -2,6 +2,7 @@
 	{
 		"matricula": "118210965",
 		"senha": "Togekiss1!",
+		"horarioDeAbertura": "20:52:00",
 		"disciplinas": {
 			"1411192 - 01": "SISTEMAS OPERACIONAIS",
 			"1411316 - 01": "INTELIGENCIA ARTIFICIAL",
