@@ -51,16 +51,32 @@ def localizador_de_disciplinas(codigo_e_posicoes):
             print("Foram lidas {} linhas".format(contador))
             break
 
+
+def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes):
+    for codigo in disciplinas_para_matricular.keys() :
+        try:
+            linha = codigo_e_posicoes[codigo]
+            xpath = '//*[@id="tabOferta"]/tbody/tr[{}]/td[6]/input'.format(linha)
+            browser.find_element_by_xpath(xpath).click()
+            print("Selecionado a disciplina {}".format(disciplinas_para_matricular[codigo]))
+        except:
+            print("Não foi possível se matricular na disciplina {}".format(disciplinas_para_matricular[codigo]))
+
+
 TEMPO_DE_ESPERA = 10
 
+# Inicialização do navagador e acesso à página de login.
 browser = webdriver.Chrome()
 urlLogin = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/" 
 browser.get(urlLogin)
 
+# Carrega informações do json.
 matricula, senha, horarioDeAbertura, disciplinas_para_matricular = ler_do_json()
+# Faz login com as informações
 fazLogin(matricula, senha)
 
 
+# Aguarda o horário previsto para abertura da plataforma.
 urlHorario = 'https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoHorarioConfirmar&ano=2019&periodo=1'
 
 while (horarioDeAbertura > pegaHorario(urlHorario)):
@@ -68,7 +84,7 @@ while (horarioDeAbertura > pegaHorario(urlHorario)):
     print ("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
     time.sleep(TEMPO_DE_ESPERA)
 
-
+# Tenta acessar a página da plataforma e aguarda caso esteja fechada.
 urlMatricula = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoMatriculaGetForm"
 
 while (True):
@@ -81,19 +97,15 @@ while (True):
     print ("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
     time.sleep(TEMPO_DE_ESPERA)
 
-
+# Ler todas as disciplinas nas páginas e as armazena.
 codigo_e_posicoes = {}
 localizador_de_disciplinas(codigo_e_posicoes)
 
-for codigo in disciplinas_para_matricular.keys() :
-    try:
-        linha = codigo_e_posicoes[codigo]
-        xpath = '//*[@id="tabOferta"]/tbody/tr[{}]/td[6]/input'.format(linha)
-        browser.find_element_by_xpath(xpath).click()
-        print("Selecionado a disciplina {}".format(disciplinas_para_matricular[codigo]))
-    except:
-        print("Não foi possível se matricular na disciplina {}".format(disciplinas_para_matricular[codigo]))
+# Seleciona as disciplinas para matrícula especificadas.
+selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes)
 
+
+# Clica no botão de fazer matrícula.
 browser.find_element_by_xpath(
     '//*[@id="conteudo"]/form/div[3]/input[3]').click()
 
