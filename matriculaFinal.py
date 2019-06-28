@@ -36,18 +36,6 @@ def pegaHorario(urlHorario):
     return horarioAtual
 
 
-
-def fazLogin(matricula, senha):
-    user = browser.find_element_by_name("login")
-    password = browser.find_element_by_name("senha")
-    user.clear()
-    user.send_keys(matricula)
-    password.clear()
-    password.send_keys(senha)
-    browser.find_element_by_xpath(
-        ".//*[contains(text(), 'OK')]").click()
-    
-
 def localizador_de_disciplinas(codigo_e_posicoes):
     for contador in range(1, 400):
         try:
@@ -93,8 +81,6 @@ while (True):
     print ("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
     time.sleep(TEMPO_DE_ESPERA)
 
-urlMatricula = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoMatriculaGetForm"
-browser.get(urlMatricula)
 
 codigo_e_posicoes = {}
 localizador_de_disciplinas(codigo_e_posicoes)
