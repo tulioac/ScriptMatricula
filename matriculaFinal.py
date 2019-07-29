@@ -69,7 +69,7 @@ def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes
             print("Não foi possível se matricular na disciplina {}".format(disciplinas_para_matricular[codigo]))
 
 
-TEMPO_DE_ESPERA = 10
+TEMPO_DE_ESPERA = 5
 
 # Inicialização do navagador e acesso à página de login.
 browser = webdriver.Chrome()
@@ -97,11 +97,14 @@ while (True):
     browser.get(urlMatricula)
     if browser.find_element_by_xpath('//*[@id="conteudo"]/div[1]').get_attribute("class") == "alert alert-danger":
         print ("Ainda não abriu!")
+        
     else:
         print("Abriu!")
         break
-    print ("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
-    time.sleep(TEMPO_DE_ESPERA)
+    fazLogout()
+    print ("Pausa de {:.2f} segundos...".format(TEMPO_DE_ESPERA//3))
+    time.sleep(TEMPO_DE_ESPERA//3)
+    fazLogin(matricula, senha)
 
 # Ler todas as disciplinas nas páginas e as armazena.
 codigo_e_posicoes = {}
