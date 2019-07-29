@@ -27,6 +27,12 @@ def fazLogin(matricula, senha):
         ".//*[contains(text(), 'OK')]").click()
 
 
+def fazLogout():
+    XPathBotaoDeSair = '//*[@id="menu"]/ul/li[6]/a'
+    botaoDeSair = browser.find_element_by_xpath(XPathBotaoDeSair)
+    botaoDeSair.click()
+
+
 def pegaHorario(urlHorario):
     browser.get(urlHorario)
 
