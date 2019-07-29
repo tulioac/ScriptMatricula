@@ -1,0 +1,13 @@
+[
+	{
+		"matricula": "118210965",
+		"senha": "Togekiss1!",
+		"horarioDeAbertura": "12:00:00",
+		"disciplinas": {
+			"1411305 - 02": "ESTRUTURA DE DADOS",
+			"1411306 - 01": "LABORATORIO DE ESTRUTURA DE DADOS",
+			"1411307 - 02": "LOGICA PARA COMPUTACAO",
+			"1411309 - 02": "PARADIGMAS DE LINGUAGEM DE PROGRAMACAO"
+		}
+	}
+]
