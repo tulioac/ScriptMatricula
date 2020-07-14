@@ -1,2 +1,11 @@
 # Driver do chrome
 chromedriver.exe
+__pycache_
+dist/
+build/
+matricula.gif
+matricula1.avi
+debug.log
+matriculaFinal.spec
+matriculaLocal.py
+paginaLocal.html
