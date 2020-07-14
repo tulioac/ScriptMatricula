@@ -2,6 +2,7 @@
 	{
 		"matricula": "111222333",
 		"senha": "senha",
+		"horarioDeAbertura": "12:00:00",
 		"disciplinas": {
 			"1411305 - 02": "ESTRUTURA DE DADOS",
 			"1411306 - 01": "LABORATORIO DE ESTRUTURA DE DADOS",
