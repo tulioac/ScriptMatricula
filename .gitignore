@@ -1,6 +1,6 @@
 # Driver do chrome
 chromedriver.exe
-__pycache_
+__pycache__
 dist/
 build/
 local/
