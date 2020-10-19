@@ -8,4 +8,4 @@ Bot para fazer a matrícula na UFCG
 - Time
 
 ### Ferramentas
-- ChromeDriver ou _driver_ correspondente ao navegador. 
+- _[ChromeDriver](https://chromedriver.chromium.org/downloads)_ ou _driver_ correspondente ao navegador. 
