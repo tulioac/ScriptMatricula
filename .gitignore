@@ -1,4 +1,4 @@
-# Driver do chrome
+# Driver do chrome.
 chromedriver.exe
 __pycache__
 dist/
