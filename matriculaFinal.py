@@ -7,16 +7,16 @@ import time
 def ler_do_json():
     with open("dados.json", encoding="utf-8") as json_file:
         dados = json.load(json_file)
-        for d in dados:
-            matricula = d["matricula"]
-            senha = d["senha"]
-            horarioDeAbertura = d["horarioDeAbertura"]
-            disciplinas = d["disciplinas"]
-    horarioDeAbertura = time.strptime(horarioDeAbertura, '%H:%M:%S')
-    return matricula, senha, horarioDeAbertura, disciplinas
+        for dado in dados:
+            matricula = dado["matricula"]
+            senha = dado["senha"]
+            horario_de_abertura = dado["horario_de_abertura"]
+            disciplinas = dado["disciplinas"]
+    horario_de_abertura = time.strptime(horario_de_abertura, '%H:%M:%S')
+    return matricula, senha, horario_de_abertura, disciplinas
 
 
-def fazLogin(matricula, senha):
+def faz_login(matricula, senha):
     user = browser.find_element_by_name("login")
     password = browser.find_element_by_name("senha")
     user.clear()
@@ -27,19 +27,19 @@ def fazLogin(matricula, senha):
         ".//*[contains(text(), 'OK')]").click()
 
 
-def fazLogout():
-    XPathBotaoDeSair = '//*[@id="menu"]/ul/li[6]/a'
-    botaoDeSair = browser.find_element_by_xpath(XPathBotaoDeSair)
-    botaoDeSair.click()
+def faz_logout():
+    XPath_botao_de_sair = '//*[@id="menu"]/ul/li[6]/a'
+    botao_de_sair = browser.find_element_by_xpath(XPath_botao_de_sair)
+    botao_de_sair.click()
 
 
-def pegaHorario(urlHorario):
-    browser.get(urlHorario)
+def pega_horario(url_horario):
+    browser.get(url_horario)
 
-    xPathData = '//*[@id="conteudo"]/div[4]/div[2]'
-    infoHora = str(browser.find_element_by_xpath(xPathData).get_attribute("innerHTML"))[20:]
-    horarioAtual = time.strptime(infoHora, '%H:%M:%S')
-    return horarioAtual
+    xPath_data = '//*[@id="conteudo"]/div[4]/div[2]'
+    info_hora = str(browser.find_element_by_xpath(xPath_data).get_attribute("innerHTML"))[20:]
+    horario_atual = time.strptime(info_hora, '%H:%M:%S')
+    return horario_atual
 
 
 def localizador_de_disciplinas(codigo_e_posicoes):
@@ -58,7 +58,7 @@ def localizador_de_disciplinas(codigo_e_posicoes):
             break
 
 
-def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes):
+def seleciona_disciplinas_desejadas(disciplinas_para_matricular, codigo_e_posicoes):
     for codigo in disciplinas_para_matricular.keys() :
         try:
             linha = codigo_e_posicoes[codigo]
@@ -73,45 +73,45 @@ TEMPO_DE_ESPERA = 5
 
 # Inicialização do navagador e acesso à página de login.
 browser = webdriver.Chrome()
-urlLogin = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/" 
-browser.get(urlLogin)
+url_login = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/" 
+browser.get(url_login)
 
 # Carrega informações do json.
-matricula, senha, horarioDeAbertura, disciplinas_para_matricular = ler_do_json()
+matricula, senha, horario_de_abertura, disciplinas_para_matricular = ler_do_json()
 # Faz login com as informações
-fazLogin(matricula, senha)
+faz_login(matricula, senha)
 
 
 # Aguarda o horário previsto para abertura da plataforma.
-urlHorario = 'https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoHorarioConfirmar&ano=2019&periodo=1'
+url_horario = 'https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoHorarioConfirmar&ano=2019&periodo=1'
 
-while (horarioDeAbertura > pegaHorario(urlHorario)):
+while (horario_de_abertura > pega_horario(url_horario)):
     print ("Esperando horário!")
     print ("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
     time.sleep(TEMPO_DE_ESPERA)
 
 # Tenta acessar a página da plataforma e aguarda caso esteja fechada.
-urlMatricula = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoMatriculaGetForm"
+url_matricula = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoMatriculaGetForm"
 
 while (True):
-    browser.get(urlMatricula)
+    browser.get(url_matricula)
     if browser.find_element_by_xpath('//*[@id="conteudo"]/div[1]').get_attribute("class") == "alert alert-danger":
         print ("Ainda não abriu!")
         
     else:
         print("Abriu!")
         break
-    fazLogout()
+    faz_logout()
     print ("Pausa de {:.2f} segundos...".format(TEMPO_DE_ESPERA//3))
     time.sleep(TEMPO_DE_ESPERA//3)
-    fazLogin(matricula, senha)
+    faz_login(matricula, senha)
 
 # Ler todas as disciplinas nas páginas e as armazena.
 codigo_e_posicoes = {}
 localizador_de_disciplinas(codigo_e_posicoes)
 
 # Seleciona as disciplinas para matrícula especificadas.
-selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes)
+seleciona_disciplinas_desejadas(disciplinas_para_matricular, codigo_e_posicoes)
 
 
 # Clica no botão de fazer matrícula.
