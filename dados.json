@@ -1,5 +1,7 @@
 [
 	{
+		"ano": "2019",
+		"periodo": "1",
 		"matricula": "111222333",
 		"senha": "senha",
 		"horarioDeAbertura": "12:00:00",
