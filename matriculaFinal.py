@@ -43,6 +43,7 @@ def pegaHorario(urlHorario):
 
 
 def localizador_de_disciplinas(codigo_e_posicoes):
+    print("Lendo as disciplinas da página")
     for contador in range(1, 400):
         try:
             xpath = '//*[@id="tabOferta"]/tbody/tr[{Contador}]/td[2]'.format(
@@ -59,14 +60,21 @@ def localizador_de_disciplinas(codigo_e_posicoes):
 
 
 def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes):
-    for codigo in disciplinas_para_matricular.keys() :
-        try:
-            linha = codigo_e_posicoes[codigo]
-            xpath = '//*[@id="tabOferta"]/tbody/tr[{}]/td[6]/input'.format(linha)
-            browser.find_element_by_xpath(xpath).click()
-            print("Selecionado a disciplina {}".format(disciplinas_para_matricular[codigo]))
-        except:
-            print("Não foi possível se matricular na disciplina {}".format(disciplinas_para_matricular[codigo]))
+    matriculadas = 0
+
+    while matriculadas == 0:
+        localizador_de_disciplinas(codigo_e_posicoes)
+
+        for codigo in disciplinas_para_matricular.keys():
+            try:
+                linha = codigo_e_posicoes[codigo]
+                xpath = '//*[@id="tabOferta"]/tbody/tr[{}]/td[6]/input'.format(linha)
+                browser.find_element_by_xpath(xpath).click()
+                matriculadas += 1
+                print("Selecionado a disciplina {}".format(disciplinas_para_matricular[codigo]))
+            except:
+                print("Não foi possível se matricular na disciplina {}".format(disciplinas_para_matricular[codigo]))
+
 
 
 TEMPO_DE_ESPERA = 5
@@ -106,11 +114,9 @@ while (True):
     time.sleep(TEMPO_DE_ESPERA//3)
     fazLogin(matricula, senha)
 
-# Ler todas as disciplinas nas páginas e as armazena.
-codigo_e_posicoes = {}
-localizador_de_disciplinas(codigo_e_posicoes)
 
-# Seleciona as disciplinas para matrícula especificadas.
+# Ler e seleciona as disciplinas para matrícula especificadas.
+codigo_e_posicoes = {}
 selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes)
 
 
