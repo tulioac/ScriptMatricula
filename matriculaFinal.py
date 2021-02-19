@@ -37,7 +37,8 @@ def pegaHorario(urlHorario):
     browser.get(urlHorario)
 
     xPathData = '//*[@id="conteudo"]/div[4]/div[2]'
-    infoHora = str(browser.find_element_by_xpath(xPathData).get_attribute("innerHTML"))[20:]
+    infoHora = str(browser.find_element_by_xpath(
+        xPathData).get_attribute("innerHTML"))[20:]
     horarioAtual = time.strptime(infoHora, '%H:%M:%S')
     return horarioAtual
 
@@ -51,7 +52,7 @@ def localizador_de_disciplinas(codigo_e_posicoes):
             codigo_e_turma_da_disciplina = str(
                 browser.find_element_by_xpath(xpath).get_attribute("innerHTML"))
             codigo_e_turma_da_disciplina = str(     # Verificar se precisa desse cast para str
-                codigo_e_turma_da_disciplina[1:13]) 
+                codigo_e_turma_da_disciplina[1:13])
             codigo_e_posicoes[codigo_e_turma_da_disciplina] = str(
                 contador)
         except:
@@ -59,7 +60,7 @@ def localizador_de_disciplinas(codigo_e_posicoes):
             break
 
 
-def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes):
+def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes, browser):
     matriculadas = 0
 
     while matriculadas == 0:
@@ -68,20 +69,24 @@ def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes
         for codigo in disciplinas_para_matricular.keys():
             try:
                 linha = codigo_e_posicoes[codigo]
-                xpath = '//*[@id="tabOferta"]/tbody/tr[{}]/td[6]/input'.format(linha)
+                xpath = '//*[@id="tabOferta"]/tbody/tr[{}]/td[6]/input'.format(
+                    linha)
                 browser.find_element_by_xpath(xpath).click()
                 matriculadas += 1
-                print("Selecionado a disciplina {}".format(disciplinas_para_matricular[codigo]))
+                print("Selecionado a disciplina {}".format(
+                    disciplinas_para_matricular[codigo]))
             except:
-                print("Não foi possível se matricular na disciplina {}".format(disciplinas_para_matricular[codigo]))
+                print("Não foi possível se matricular na disciplina {}".format(
+                    disciplinas_para_matricular[codigo]))
 
+        browser.refresh()
 
 
 TEMPO_DE_ESPERA = 5
 
 # Inicialização do navagador e acesso à página de login.
 browser = webdriver.Chrome()
-urlLogin = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/" 
+urlLogin = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/"
 browser.get(urlLogin)
 
 # Carrega informações do json.
@@ -94,8 +99,8 @@ fazLogin(matricula, senha)
 urlHorario = 'https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador?command=AlunoHorarioConfirmar&ano=2019&periodo=1'
 
 while (horarioDeAbertura > pegaHorario(urlHorario)):
-    print ("Esperando horário!")
-    print ("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
+    print("Esperando horário!")
+    print("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
     time.sleep(TEMPO_DE_ESPERA)
 
 # Tenta acessar a página da plataforma e aguarda caso esteja fechada.
@@ -104,20 +109,21 @@ urlMatricula = "https://pre.ufcg.edu.br:8443/ControleAcademicoOnline/Controlador
 while (True):
     browser.get(urlMatricula)
     if browser.find_element_by_xpath('//*[@id="conteudo"]/div[1]').get_attribute("class") == "alert alert-danger":
-        print ("Ainda não abriu!")
-        
+        print("Ainda não abriu!")
+
     else:
         print("Abriu!")
         break
     fazLogout()
-    print ("Pausa de {:.2f} segundos...".format(TEMPO_DE_ESPERA//3))
+    print("Pausa de {:.2f} segundos...".format(TEMPO_DE_ESPERA//3))
     time.sleep(TEMPO_DE_ESPERA//3)
     fazLogin(matricula, senha)
 
 
 # Ler e seleciona as disciplinas para matrícula especificadas.
 codigo_e_posicoes = {}
-selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes)
+selecionaDisciplinasDesejadas(
+    disciplinas_para_matricular, codigo_e_posicoes, browser)
 
 
 # Clica no botão de fazer matrícula.
