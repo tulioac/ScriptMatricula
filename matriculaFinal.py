@@ -64,7 +64,7 @@ def localizador_de_disciplinas():
             break
 
 
-def selecionaDisciplinasDesejadas(disciplinas_para_matricular, browser):
+def selecionaDisciplinasDesejadas(disciplinas_para_matricular):
     matriculadas = 0
 
     while matriculadas == 0:
@@ -124,7 +124,7 @@ while (True):
 
 # Seleciona as disciplinas para matrícula especificadas.
 selecionaDisciplinasDesejadas(
-    disciplinas_para_matricular, browser)
+    disciplinas_para_matricular)
 
 
 # Clica no botão de fazer matrícula.
