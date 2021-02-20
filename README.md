@@ -1,5 +1,5 @@
 # ScriptMatricula
-Bot para fazer a matrícula na UFCG
+Scrip para fazer a matrícula na UFCG de forma automática.
 
 ## Depedências
 ### Bibliotecas
