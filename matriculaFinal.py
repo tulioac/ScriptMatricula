@@ -3,6 +3,8 @@ from selenium.webdriver.common.keys import Keys
 import json
 import time
 
+codigo_e_posicoes = {}
+
 
 def ler_do_json():
     with open("dados.json", encoding="utf-8") as json_file:
@@ -43,7 +45,9 @@ def pegaHorario(urlHorario):
     return horarioAtual
 
 
-def localizador_de_disciplinas(codigo_e_posicoes):
+def localizador_de_disciplinas():
+    browser.refresh()
+
     print("Lendo as disciplinas da página")
     for contador in range(1, 400):
         try:
@@ -60,11 +64,11 @@ def localizador_de_disciplinas(codigo_e_posicoes):
             break
 
 
-def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes, browser):
+def selecionaDisciplinasDesejadas(disciplinas_para_matricular, browser):
     matriculadas = 0
 
     while matriculadas == 0:
-        localizador_de_disciplinas(codigo_e_posicoes)
+        localizador_de_disciplinas()
 
         for codigo in disciplinas_para_matricular.keys():
             try:
@@ -78,8 +82,6 @@ def selecionaDisciplinasDesejadas(disciplinas_para_matricular, codigo_e_posicoes
             except:
                 print("Não foi possível se matricular na disciplina {}".format(
                     disciplinas_para_matricular[codigo]))
-
-        browser.refresh()
 
 
 TEMPO_DE_ESPERA = 5
@@ -120,10 +122,9 @@ while (True):
     fazLogin(matricula, senha)
 
 
-# Ler e seleciona as disciplinas para matrícula especificadas.
-codigo_e_posicoes = {}
+# Seleciona as disciplinas para matrícula especificadas.
 selecionaDisciplinasDesejadas(
-    disciplinas_para_matricular, codigo_e_posicoes, browser)
+    disciplinas_para_matricular, browser)
 
 
 # Clica no botão de fazer matrícula.
