@@ -1,5 +1,5 @@
 # ScriptMatricula
-Scrip para fazer a matrícula na UFCG de forma automática.
+Script para fazer a matrícula na UFCG de forma automática.
 
 ## Instalação do Driver
 
