@@ -45,6 +45,12 @@ class ScriptMatricula:
         botaoDeSair = self.browser.find_element_by_xpath(XPathBotaoDeSair)
         botaoDeSair.click()
 
+    def aguarda_horario(self):
+        while (horarioDeAbertura > self.pegaHorario()):
+            print("Esperando horário!")
+            print("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
+            time.sleep(TEMPO_DE_ESPERA)
+
     def pegaHorario(self,):
         self.browser.get(URL_HORARIO)
 
@@ -53,6 +59,21 @@ class ScriptMatricula:
             xPathData).get_attribute("innerHTML"))[20:]
         horarioAtual = time.strptime(infoHora, '%H:%M:%S')
         return horarioAtual
+
+    def verifica_abertura(self):
+        while (True):
+            self.browser.get(URL_MATRICULA)
+            if self.browser.find_element_by_xpath('//*[@id="conteudo"]/div[1]').get_attribute("class") == "alert alert-danger":
+                print("Ainda não abriu!")
+
+            else:
+                print("Abriu!")
+                break
+
+            self.fazLogout()
+            print("Pausa de {:.2f} segundos...".format(TEMPO_DE_ESPERA//3))
+            time.sleep(TEMPO_DE_ESPERA//3)
+            self.fazLogin()
 
     def localizador_de_disciplinas(self):
         self.browser.refresh()
@@ -91,6 +112,10 @@ class ScriptMatricula:
                     print("Não foi possível se matricular na disciplina {}".format(
                         disciplinas_para_matricular[codigo]))
 
+    def clica_matricular(self):
+        self.browser.find_element_by_xpath(
+            '//*[@id="conteudo"]/form/div[3]/input[3]').click()
+
     def faz_matricula(self):
         # Acessa a página de login
         self.browser.get(URL_LOGIN)
@@ -99,32 +124,16 @@ class ScriptMatricula:
         self.fazLogin()
 
         # Aguarda o horário da abertura
-        while (horarioDeAbertura > self.pegaHorario()):
-            print("Esperando horário!")
-            print("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
-            time.sleep(TEMPO_DE_ESPERA)
+        self.aguarda_horario()
 
         # Acessa a página de registrar e aguarda abertura
-        while (True):
-            self.browser.get(URL_MATRICULA)
-            if self.browser.find_element_by_xpath('//*[@id="conteudo"]/div[1]').get_attribute("class") == "alert alert-danger":
-                print("Ainda não abriu!")
-
-            else:
-                print("Abriu!")
-                break
-
-            self.fazLogout()
-            print("Pausa de {:.2f} segundos...".format(TEMPO_DE_ESPERA//3))
-            time.sleep(TEMPO_DE_ESPERA//3)
-            self.fazLogin()
+        self.verifica_abertura()
 
         # Lê e seleciona as disciplinas desejadas na página
         self.selecionaDisciplinasDesejadas()
 
         # Clica no botão de fazer matrícula
-        self.browser.find_element_by_xpath(
-            '//*[@id="conteudo"]/form/div[3]/input[3]').click()
+        self.clica_matricular()
 
         # Imprime "Matriculado!"
         print("Matriculado!")
