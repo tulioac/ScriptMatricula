@@ -52,7 +52,7 @@ Com o _driver_ baixado no seu computador, será necessário adicioná-lo ao _pat
    - Ou utilize o executável `.exe` (**Windows apenas**).
 3. Seja feliz.
 
-## Depedências
+## Dependências
 
 ### Bibliotecas
 - [Selenium](https://pypi.org/project/selenium/)
