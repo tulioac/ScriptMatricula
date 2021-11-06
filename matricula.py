@@ -30,7 +30,7 @@ class ScriptMatricula:
         self.browser = webdriver.Chrome()
         self.codigos_e_posicoes = {}
 
-    def fazLogin(self):
+    def faz_login(self):
         user = self.browser.find_element_by_name("login")
         password = self.browser.find_element_by_name("senha")
         user.clear()
@@ -40,18 +40,18 @@ class ScriptMatricula:
         self.browser.find_element_by_xpath(
             ".//*[contains(text(), 'OK')]").click()
 
-    def fazLogout(self):
+    def faz_logout(self):
         XPathBotaoDeSair = '//*[@id="menu"]/ul/li[6]/a'
         botaoDeSair = self.browser.find_element_by_xpath(XPathBotaoDeSair)
         botaoDeSair.click()
 
     def aguarda_horario(self):
-        while (horarioDeAbertura > self.pegaHorario()):
+        while (horarioDeAbertura > self.pega_horario()):
             print("Esperando horário!")
             print("Pausa de {} segundos...".format(TEMPO_DE_ESPERA))
             time.sleep(TEMPO_DE_ESPERA)
 
-    def pegaHorario(self,):
+    def pega_horario(self,):
         self.browser.get(URL_HORARIO)
 
         xPathData = '//*[@id="conteudo"]/div[4]/div[2]'
@@ -70,10 +70,10 @@ class ScriptMatricula:
                 print("Abriu!")
                 break
 
-            self.fazLogout()
+            self.faz_logout()
             print("Pausa de {:.2f} segundos...".format(TEMPO_DE_ESPERA//3))
             time.sleep(TEMPO_DE_ESPERA//3)
-            self.fazLogin()
+            self.faz_login()
 
     def localizador_de_disciplinas(self):
         self.browser.refresh()
@@ -93,7 +93,7 @@ class ScriptMatricula:
                 print("Foram lidas {} linhas".format(contador))
                 break
 
-    def selecionaDisciplinasDesejadas(self):
+    def seleciona_disciplinas_desejadas(self):
         matriculadas = 0
 
         while matriculadas == 0:
@@ -121,7 +121,7 @@ class ScriptMatricula:
         self.browser.get(URL_LOGIN)
 
         # Faz login
-        self.fazLogin()
+        self.faz_login()
 
         # Aguarda o horário da abertura
         self.aguarda_horario()
@@ -130,7 +130,7 @@ class ScriptMatricula:
         self.verifica_abertura()
 
         # Lê e seleciona as disciplinas desejadas na página
-        self.selecionaDisciplinasDesejadas()
+        self.seleciona_disciplinas_desejadas()
 
         # Clica no botão de fazer matrícula
         self.clica_matricular()
