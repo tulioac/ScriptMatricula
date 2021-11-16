@@ -116,7 +116,7 @@ class ScriptMatricula:
 
         while matriculadas == 0:
             self.localizador_de_disciplinas()
-
+            clear_console()
             for codigo in disciplinas_para_matricular.keys():
                 try:
                     linha = self.codigos_e_posicoes[codigo]
