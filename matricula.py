@@ -36,17 +36,17 @@ class ScriptMatricula:
         self.codigos_e_posicoes = {}
 
     def faz_login(self):
-        user = self.browser.find_element_by_name("login")
-        password = self.browser.find_element_by_name("senha")
+        user = self.browser.find_element("name", "login")
+        password = self.browser.find_element("name", "senha")
         user.clear()
         user.send_keys(self.matricula)
         password.clear()
         password.send_keys(self.senha)
-        self.browser.find_element_by_xpath(".//*[contains(text(), 'OK')]").click()
+        self.browser.find_element("xpath", ".//*[contains(text(), 'OK')]").click()
 
     def faz_logout(self):
         XPathBotaoDeSair = '//*[@id="menu"]/ul/li[6]/a'
-        botaoDeSair = self.browser.find_element_by_xpath(XPathBotaoDeSair)
+        botaoDeSair = self.browser.find_element("xpath", XPathBotaoDeSair)
         botaoDeSair.click()
 
     def aguarda_horario(self):
@@ -63,7 +63,7 @@ class ScriptMatricula:
 
         xPathData = '//*[@id="conteudo"]/div[4]/div[2]'
         infoHora = str(
-            self.browser.find_element_by_xpath(xPathData).get_attribute("innerHTML")
+            self.browser.find_element("xpath", xPathData).get_attribute("innerHTML")
         )[20:]
         horarioAtual = time.strptime(infoHora, "%H:%M:%S")
         return horarioAtual
@@ -72,7 +72,8 @@ class ScriptMatricula:
         while True:
             self.browser.get(URL_MATRICULA)
             if (
-                self.browser.find_element_by_xpath(
+                self.browser.find_element(
+                    "xpath",
                     '//*[@id="conteudo"]/div[1]'
                 ).get_attribute("class")
                 == "alert alert-danger"
@@ -99,7 +100,7 @@ class ScriptMatricula:
                     Contador=contador
                 )
                 codigo_e_turma_da_disciplina = str(
-                    self.browser.find_element_by_xpath(xpath).get_attribute("innerHTML")
+                    self.browser.find_element("xpath", xpath).get_attribute("innerHTML")
                 )
                 codigo_e_turma_da_disciplina = (
                     str(  # Verificar se precisa desse cast para str
@@ -123,7 +124,7 @@ class ScriptMatricula:
                     xpath = '//*[@id="tabOferta"]/tbody/tr[{}]/td[6]/input'.format(
                         linha
                     )
-                    self.browser.find_element_by_xpath(xpath).click()
+                    self.browser.find_element("xpath", xpath).click()
                     matriculadas += 1
                     print(
                         "✅  Selecionado a disciplina {}".format(
@@ -138,7 +139,8 @@ class ScriptMatricula:
                     )
 
     def clica_matricular(self):
-        self.browser.find_element_by_xpath(
+        self.browser.find_element(
+            "xpath",
             '//*[@id="conteudo"]/form/div[3]/input[3]'
         ).click()
 
