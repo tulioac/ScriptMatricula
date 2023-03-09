@@ -79,7 +79,7 @@ class ScriptMatricula:
                 == "alert alert-danger"
             ):
                 clear_console()
-                print("⚠️  Ainda não abriu!")
+                print("❗  Ainda não abriu!")
 
             else:
                 print("✨  Abriu!")
